@@ -59,7 +59,7 @@ const Pagination = props => {
                     ))}
                 </Select>
                 <Box component="span" className={muiClasses.mr2}>
-                    per page
+                    pokemons per page
                 </Box>
             </Box>
             <Box className={muiClasses.prevNext}>

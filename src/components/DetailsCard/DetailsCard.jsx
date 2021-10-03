@@ -24,9 +24,12 @@ const muiStyles = makeStyles(theme => ({
             transition: 'transform 0.5s'
         }
     },
+    cardActionArea: {
+        padding: theme.spacing(2, 0)
+    },
     cardMediaContainer: {
-        height: theme.spacing(15),
-        width: theme.spacing(15),
+        height: theme.spacing(12.5),
+        width: theme.spacing(12.5),
         margin: '0 auto',
         padding: theme.spacing(2),
         overflow: 'hidden',
@@ -36,7 +39,8 @@ const muiStyles = makeStyles(theme => ({
         }
     },
     pokemonName: {
-        textTransform: 'capitalize'
+        textTransform: 'capitalize',
+        fontSize: theme.spacing(2.5)
     },
     sizeSpec: {
         flexDirection: 'row'
@@ -83,7 +87,7 @@ const DetailsCard = props => {
 
     return Object.keys(details).length ? (
         <Card className={muiClasses.card}>
-            <CardActionArea>
+            <CardActionArea className={muiClasses.cardActionArea}>
                 <Box className={muiClasses.cardMediaContainer}>
                     <CardMedia
                         component="img"
