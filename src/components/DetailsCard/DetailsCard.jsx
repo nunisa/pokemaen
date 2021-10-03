@@ -7,6 +7,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Chip from '@material-ui/core/Chip';
+import { DetailsSkeleton } from '../Skeletons';
 
 // MUI custom styles
 const muiStyles = makeStyles(theme => ({
@@ -65,23 +66,24 @@ const DetailsCard = props => {
                 const res = await pokemaenApiUtils.getPokemonByName({
                     pokemonName: pokemon.name
                 });
-                setDetails({
-                    ...res.data,
-                    dp: require('../../assets/images/logo192.png').default
-                });
+                setDetails(res.data);
             } catch (err) {
                 // Error occurred
             }
         };
         getAllPokemons();
     }, [pokemon, pokemaenApiUtils]);
-    const { name, height, weight, abilities, dp } = details;
+    const { name, height, weight, abilities, sprites } = details;
 
     return Object.keys(details).length ? (
         <Card>
             <CardActionArea>
                 <Box className={muiClasses.cardMediaContainer}>
-                    <CardMedia component="img" image={dp} alt={name} />
+                    <CardMedia
+                        component="img"
+                        image={sprites.other['official-artwork'].front_default}
+                        alt={name}
+                    />
                 </Box>
                 <CardContent>
                     <Typography
@@ -178,7 +180,9 @@ const DetailsCard = props => {
                 </CardContent>
             </CardActionArea>
         </Card>
-    ) : null;
+    ) : (
+        <DetailsSkeleton />
+    );
 };
 
 export default DetailsCard;
