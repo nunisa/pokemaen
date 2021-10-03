@@ -18,6 +18,12 @@ const muiStyles = makeStyles(theme => ({
         alignItems: 'center',
         flexGrow: 1
     },
+    card: {
+        '&:hover': {
+            transform: 'scale(1.05)',
+            transition: 'transform 0.5s'
+        }
+    },
     cardMediaContainer: {
         height: theme.spacing(15),
         width: theme.spacing(15),
@@ -76,7 +82,7 @@ const DetailsCard = props => {
     const { name, height, weight, abilities, sprites } = details;
 
     return Object.keys(details).length ? (
-        <Card>
+        <Card className={muiClasses.card}>
             <CardActionArea>
                 <Box className={muiClasses.cardMediaContainer}>
                     <CardMedia

@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import DetailsCard from './DetailsCard';
+import DetailsCard from './DetailsCard.jsx';
 
 let wrapper;
 
