@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
@@ -27,7 +28,9 @@ const muiStyles = makeStyles(theme => ({
             width: '100%'
         }
     },
-    pokemonName: {},
+    pokemonName: {
+        textTransform: 'capitalize'
+    },
     sizeSpec: {
         flexDirection: 'row'
     },
@@ -53,11 +56,28 @@ const muiStyles = makeStyles(theme => ({
 
 const DetailsCard = props => {
     const muiClasses = muiStyles();
-    const {
-        pokemon: { name, height, weight, abilities, dp }
-    } = props;
+    const { pokemon, pokemaenApiUtils } = props;
+    const [details, setDetails] = useState({});
 
-    return (
+    useEffect(() => {
+        const getAllPokemons = async () => {
+            try {
+                const res = await pokemaenApiUtils.getPokemonByName({
+                    pokemonName: pokemon.name
+                });
+                setDetails({
+                    ...res.data,
+                    dp: require('../../assets/images/logo192.png').default
+                });
+            } catch (err) {
+                // Error occurred
+            }
+        };
+        getAllPokemons();
+    }, [pokemon, pokemaenApiUtils]);
+    const { name, height, weight, abilities, dp } = details;
+
+    return Object.keys(details).length ? (
         <Card>
             <CardActionArea>
                 <Box className={muiClasses.cardMediaContainer}>
@@ -87,7 +107,7 @@ const DetailsCard = props => {
                             gutterBottom
                             className={muiClasses.ml}
                         >
-                            {`${height / 100}m`}
+                            {`${height / 10}m`}
                         </Typography>
                         <Box component="span" className={muiClasses.dot} />
                         <Typography
@@ -103,7 +123,7 @@ const DetailsCard = props => {
                             gutterBottom
                             className={muiClasses.ml}
                         >
-                            {`${weight / 1000}kg`}
+                            {`${weight / 10}kg`}
                         </Typography>
                     </Box>
                     <Box className={muiClasses.displayType}>
@@ -115,21 +135,50 @@ const DetailsCard = props => {
                             Abilities
                         </Typography>
                         <Box className={muiClasses.chipContainer}>
-                            {abilities.map(able => (
-                                <Chip
-                                    key={able}
-                                    label={able}
-                                    color="primary"
-                                    variant="outlined"
-                                    size="small"
-                                />
-                            ))}
+                            {abilities
+                                .filter(item => !item.is_hidden)
+                                .reduce((arr, { ability: { name } }) => {
+                                    let capChartAt0 = '';
+                                    if (name.includes('-')) {
+                                        capChartAt0 = name
+                                            .split('-')
+                                            .map(
+                                                ab =>
+                                                    `${ab
+                                                        .slice(0, 1)
+                                                        .toUpperCase()}${ab
+                                                        .slice(1)
+                                                        .toLowerCase()}`
+                                            )
+                                            .join(' ');
+                                    } else {
+                                        capChartAt0 = `${name
+                                            .slice(0, 1)
+                                            .toUpperCase()}${name
+                                            .slice(1)
+                                            .toLowerCase()}`;
+                                    }
+                                    arr.push(capChartAt0);
+
+                                    return arr;
+                                }, [])
+                                .map(able => (
+                                    <Chip
+                                        key={`${able}-${Math.random()
+                                            .toString()
+                                            .slice(0, 6)}`}
+                                        label={able}
+                                        color="primary"
+                                        variant="outlined"
+                                        size="small"
+                                    />
+                                ))}
                         </Box>
                     </Box>
                 </CardContent>
             </CardActionArea>
         </Card>
-    );
+    ) : null;
 };
 
 export default DetailsCard;

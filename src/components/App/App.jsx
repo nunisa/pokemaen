@@ -1,9 +1,12 @@
+import { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import DetailsCard from '../DetailsCard';
-import { pokemons } from '../../assets/sample/data';
+import PokemaenApiUtils from '../../assets/utils/apiEndpointMethods';
 
+// Init API util class
+const pokemaenApiUtils = new PokemaenApiUtils();
 // MUI custom styles
 const muiStyles = makeStyles(theme => ({
     mainContainer: {
@@ -37,6 +40,21 @@ const muiStyles = makeStyles(theme => ({
 
 const App = props => {
     const muiClasses = muiStyles();
+    const [pokemons, setPokemons] = useState([]);
+
+    useEffect(() => {
+        const getAllPokemons = async () => {
+            try {
+                const res = await pokemaenApiUtils.getAllPokemons({
+                    limit: 12
+                });
+                setPokemons(res.data.results);
+            } catch (err) {
+                // Error occurred
+            }
+        };
+        getAllPokemons();
+    }, []);
 
     return (
         <div className={muiClasses.mainContainer}>
@@ -53,7 +71,10 @@ const App = props => {
                 <Grid container spacing={2}>
                     {pokemons.map(pokemon => (
                         <Grid item xs={6} md={2} key={pokemon.name}>
-                            <DetailsCard pokemon={pokemon} />
+                            <DetailsCard
+                                pokemon={pokemon}
+                                pokemaenApiUtils={pokemaenApiUtils}
+                            />
                         </Grid>
                     ))}
                 </Grid>
