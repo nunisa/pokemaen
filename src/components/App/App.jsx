@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import DetailsCard from '../DetailsCard';
+import { DetailsSkeleton } from '../Skeletons';
 import PokemaenApiUtils from '../../assets/utils/apiEndpointMethods';
 
 // Init API util class
@@ -69,14 +70,25 @@ const App = props => {
                 className={`${muiClasses.displayType} ${muiClasses.middleContent}`}
             >
                 <Grid container spacing={2}>
-                    {pokemons.map(pokemon => (
-                        <Grid item xs={6} md={2} key={pokemon.name}>
-                            <DetailsCard
-                                pokemon={pokemon}
-                                pokemaenApiUtils={pokemaenApiUtils}
-                            />
-                        </Grid>
-                    ))}
+                    {pokemons.length
+                        ? pokemons.map(pokemon => (
+                              <Grid item xs={6} md={2} key={pokemon.name}>
+                                  <DetailsCard
+                                      pokemon={pokemon}
+                                      pokemaenApiUtils={pokemaenApiUtils}
+                                  />
+                              </Grid>
+                          ))
+                        : [...new Array(12)].fill(0).map(() => (
+                              <Grid
+                                  item
+                                  xs={6}
+                                  md={2}
+                                  key={Math.random().toString().slice(0, 6)}
+                              >
+                                  <DetailsSkeleton />
+                              </Grid>
+                          ))}
                 </Grid>
             </div>
             <div
