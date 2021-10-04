@@ -10,7 +10,12 @@ const Cards = props => {
         <Grid container spacing={2}>
             {filtered && filtered.results && filtered.results.length
                 ? filtered.results.map(pokemon => (
-                      <Grid item xs={6} md={2} key={pokemon.name}>
+                      <Grid
+                          item
+                          xs={6}
+                          md={2}
+                          key={Math.random().toString().slice(0, 6)}
+                      >
                           <DetailsCard
                               pokemon={pokemon}
                               pokemaenApiUtils={pokemaenApiUtils}

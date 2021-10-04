@@ -8,7 +8,7 @@ import Q from 'q';
  */
 const PokemaenApiUtils = (function () {
     function PokemaenApiUtils(options) {
-        this.domain = 'https://pokeapi.co/api/v2/pokemon';
+        this.domain = process.env.REACT_APP_POKEAPI_URL;
         if (this.domain.length === 0) {
             throw new Error('Domain parameter must be specified as a string.');
         }
@@ -111,37 +111,6 @@ const PokemaenApiUtils = (function () {
     };
 
     /**
-     * Set Api Key
-     * @method
-     * @name PokemaenApiUtils#setApiKey
-     * @param {string} value - apiKey's value
-     * @param {string} headerOrQueryName - the header or query name to send the apiKey at
-     * @param {boolean} isQuery - true if send the apiKey as query param, otherwise, send as header param
-     */
-    PokemaenApiUtils.prototype.setApiKey = function (
-        value,
-        headerOrQueryName,
-        isQuery
-    ) {
-        this.apiKey.value = value;
-        this.apiKey.headerOrQueryName = headerOrQueryName;
-        this.apiKey.isQuery = isQuery;
-    };
-    /**
-     * Set Auth headers
-     * @method
-     * @name PokemaenApiUtils#setAuthHeaders
-     * @param {object} headerParams - headers object
-     */
-    PokemaenApiUtils.prototype.setAuthHeaders = function (headerParams) {
-        let headers = headerParams ? headerParams : {};
-        if (!this.apiKey.isQuery && this.apiKey.headerOrQueryName) {
-            headers[this.apiKey.headerOrQueryName] = this.apiKey.value;
-        }
-        return headers;
-    };
-
-    /**
      * API endpoint to get all pokemons
      * @method
      * @name PokemaenApiUtils#getAllPokemons
@@ -161,7 +130,6 @@ const PokemaenApiUtils = (function () {
             headers = {},
             form = {};
 
-        headers = this.setAuthHeaders(headers);
         headers['Accept'] = ['application/json'];
         headers['Content-Type'] = ['application/json'];
 
@@ -207,7 +175,6 @@ const PokemaenApiUtils = (function () {
             headers = {},
             form = {};
 
-        headers = this.setAuthHeaders(headers);
         headers['Accept'] = ['application/json'];
         headers['Content-Type'] = ['application/json'];
 
