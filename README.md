@@ -2,6 +2,12 @@
 
 The awesome app to get the details of all your pokemons.
 
+## Demo
+
+![Desktop]('public/desktop-view.png')
+![Table]('public/tablet-view.png')
+![Mobile]('public/mobile-view.png')
+
 ## Available Scripts
 
 In the project directory, you can run:
