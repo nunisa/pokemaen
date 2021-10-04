@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
@@ -10,7 +8,10 @@ import Typography from '@material-ui/core/Typography';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Chip from '@material-ui/core/Chip';
 import { DetailsSkeleton } from '../Skeletons';
+import PokemaenApiUtils from '../../assets/utils/apiEndpointMethods';
 
+// Init API util class
+const pokemaenApiUtils = new PokemaenApiUtils();
 // MUI custom styles
 const muiStyles = makeStyles(theme => ({
     displayType: {
@@ -21,17 +22,22 @@ const muiStyles = makeStyles(theme => ({
         flexGrow: 1
     },
     card: {
-        '&:hover': {
-            transform: 'scale(1.05)',
-            transition: 'transform 0.5s'
-        }
+        width: '60%',
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)'
     },
     cardActionArea: {
+        justifyContent: 'space-evenly',
+        height: `calc(100vh - ${theme.spacing(8)}px)`,
         padding: theme.spacing(2, 0)
     },
     cardMediaContainer: {
-        height: theme.spacing(12.5),
-        width: theme.spacing(12.5),
+        height: theme.spacing(30),
+        width: theme.spacing(30),
+        border: '4px solid #00ff00',
+        borderRadius: '50%',
         margin: '0 auto',
         padding: theme.spacing(2),
         overflow: 'hidden',
@@ -42,7 +48,8 @@ const muiStyles = makeStyles(theme => ({
     },
     pokemonName: {
         textTransform: 'capitalize',
-        fontSize: theme.spacing(2.5)
+        fontSize: theme.spacing(4),
+        marginBottom: theme.spacing(4)
     },
     sizeSpec: {
         flexDirection: 'row'
@@ -67,16 +74,17 @@ const muiStyles = makeStyles(theme => ({
     }
 }));
 
-const DetailsCard = props => {
+const DetailInfo = props => {
     const muiClasses = muiStyles();
-    const { pokemon, pokemaenApiUtils } = props;
+    const pokemonName =
+        (props.match && props.match.params && props.match.params.pname) || '';
     const [details, setDetails] = useState({});
 
     useEffect(() => {
         const getPokemonByName = async () => {
             try {
                 const res = await pokemaenApiUtils.getPokemonByName({
-                    pokemonName: pokemon.name
+                    pokemonName
                 });
                 setDetails(res.data);
             } catch (err) {
@@ -88,18 +96,14 @@ const DetailsCard = props => {
         return () => {
             setDetails({});
         };
-    }, [pokemon, pokemaenApiUtils]);
+    }, [pokemonName]);
 
     const { name, height, weight, abilities, sprites } = details;
-    const handleOnClick = () => {
-        props.history.push(`/${name}`);
-    };
 
     return Object.keys(details).length ? (
         <Card className={muiClasses.card}>
             <CardActionArea
-                className={muiClasses.cardActionArea}
-                onClick={handleOnClick}
+                className={`${muiClasses.displayType} ${muiClasses.cardActionArea}`}
             >
                 <Box className={muiClasses.cardMediaContainer}>
                     <CardMedia
@@ -208,9 +212,4 @@ const DetailsCard = props => {
     );
 };
 
-DetailsCard.propTypes = {
-    pokemon: PropTypes.object.isRequired,
-    pokemaenApiUtils: PropTypes.object.isRequired
-};
-
-export default withRouter(DetailsCard);
+export default DetailInfo;
