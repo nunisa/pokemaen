@@ -1,16 +1,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import App from './App.jsx';
+import NotFound from './NotFound';
 
 let wrapper;
 
-describe('App component', () => {
+describe('NotFound component', () => {
     beforeEach(() => {
-        wrapper = shallow(<App />);
+        wrapper = shallow(<NotFound />);
     });
 
     it('should be defined', () => {
-        expect(typeof App).toEqual('function');
+        expect(typeof NotFound).toEqual('function');
     });
 
     it('should be rendered without error', () => {

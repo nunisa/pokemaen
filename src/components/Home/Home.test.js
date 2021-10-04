@@ -1,16 +1,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import App from './App.jsx';
+import Home from './Home.jsx';
 
 let wrapper;
 
-describe('App component', () => {
+describe('Home component', () => {
     beforeEach(() => {
-        wrapper = shallow(<App />);
+        wrapper = shallow(<Home />);
     });
 
     it('should be defined', () => {
-        expect(typeof App).toEqual('function');
+        expect(typeof Home).toEqual('function');
     });
 
     it('should be rendered without error', () => {

@@ -1,16 +1,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import App from './App.jsx';
+import { DetailsSkeleton } from './Skeletons';
 
 let wrapper;
 
-describe('App component', () => {
+describe('DetailsSkeleton component', () => {
     beforeEach(() => {
-        wrapper = shallow(<App />);
+        wrapper = shallow(<DetailsSkeleton />);
     });
 
     it('should be defined', () => {
-        expect(typeof App).toEqual('function');
+        expect(typeof DetailsSkeleton).toEqual('function');
     });
 
     it('should be rendered without error', () => {

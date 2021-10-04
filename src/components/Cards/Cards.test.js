@@ -1,16 +1,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import App from './App.jsx';
+import Cards from './Cards.jsx';
 
 let wrapper;
 
-describe('App component', () => {
+describe('Cards component', () => {
     beforeEach(() => {
-        wrapper = shallow(<App />);
+        wrapper = shallow(<Cards filtered={[]} pokemaenApiUtils={{}} />);
     });
 
     it('should be defined', () => {
-        expect(typeof App).toEqual('function');
+        expect(typeof Cards).toEqual('function');
     });
 
     it('should be rendered without error', () => {
