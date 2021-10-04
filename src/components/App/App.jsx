@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react';
 import _ from 'lodash/fp';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core/TextField';
+import Filters from '../Filters';
 import Pagination from '../Pagination';
-import DetailsCard from '../DetailsCard';
-import { DetailsSkeleton } from '../Skeletons';
+import Cards from '../Cards';
 import PokemaenApiUtils from '../../assets/utils/apiEndpointMethods';
 
 // Init API util class
@@ -39,16 +35,6 @@ const muiStyles = makeStyles(theme => ({
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: theme.spacing(4)
-    },
-    mlAuto: {
-        marginLeft: 'auto'
-    },
-    filtersContainer: {
-        flexDirection: 'row',
-        marginRight: theme.spacing(4)
-    },
-    searchBox: {
-        marginRight: theme.spacing(4)
     }
 }));
 
@@ -56,10 +42,6 @@ const App = props => {
     const muiClasses = muiStyles();
     const [pokemons, setPokemons] = useState(null);
     const [filtered, setFiltered] = useState(null);
-    const [searchNameStr, setSearchNameStr] = useState('');
-    const [searchAbleStr, setSearchAbleStr] = useState('');
-    const [sortByValue, setSortByValue] = useState('');
-    const [sortByInputValue, setSortByInputValue] = useState('');
     const [limit, setLimit] = useState(10);
     const [offset, setOffset] = useState(0);
 
@@ -79,109 +61,28 @@ const App = props => {
         getAllPokemons();
     }, [limit, offset]);
 
-    const handleSearchChange = name => e => {
-        const newStr = e.target.value;
+    const handleSearchChange = newResults => {
         if (pokemons) {
             const newPokemons = _.cloneDeep(pokemons);
-            if (newStr) {
-                if (name === 'name') {
-                    setSearchNameStr(newStr);
-                    setFiltered({
-                        ...newPokemons,
-                        results: newPokemons.results.filter(item =>
-                            item.name.includes(newStr.toLowerCase())
-                        )
-                    });
-                } else {
-                    const promises = newPokemons.results.reduce((arr, item) => {
-                        arr.push(fetch(item.url).then(res => res.json()));
-
-                        return arr;
-                    }, []);
-                    Promise.all(promises).then(res => {
-                        const results = res.reduce((arr, item) => {
-                            item.abilities.forEach(able => {
-                                if (
-                                    !able.is_hidden &&
-                                    able.ability.name.includes(
-                                        newStr.toLowerCase()
-                                    )
-                                ) {
-                                    arr.push(item);
-                                }
-                            });
-
-                            return arr;
-                        }, []);
-                        setSearchAbleStr(newStr);
-                        setFiltered({
-                            ...newPokemons,
-                            results
-                        });
-                    });
-                }
-            } else {
-                setSearchNameStr('');
-                setSearchAbleStr('');
-                setFiltered({
-                    ...newPokemons,
-                    results: newPokemons.results
-                });
-            }
+            setFiltered({
+                ...newPokemons,
+                results: newResults
+            });
         }
     };
-    const handleSortByChange = (e, newValue) => {
-        setSortByValue(newValue);
-        const needle = (newValue && newValue.toLowerCase()) || '';
+    const handleSortByChange = newResults => {
         if (pokemons) {
             const newPokemons = _.cloneDeep(pokemons);
-            if (newValue) {
-                if (newValue === 'Name') {
-                    setFiltered({
-                        ...newPokemons,
-                        results: newPokemons.results.sort((a, b) =>
-                            a.name > b.name ? 1 : -1
-                        )
-                    });
-                } else if (newValue === 'Height' || newValue === 'Weight') {
-                    const promises = newPokemons.results.reduce((arr, item) => {
-                        arr.push(fetch(item.url).then(res => res.json()));
-
-                        return arr;
-                    }, []);
-                    Promise.all(promises).then(res => {
-                        setFiltered({
-                            ...newPokemons,
-                            results: res.sort((a, b) =>
-                                a[needle] > b[needle] ? -1 : 1
-                            )
-                        });
-                    });
-                }
-            } else {
-                setFiltered({
-                    ...newPokemons,
-                    results: newPokemons.results
-                });
-            }
+            setFiltered({
+                ...newPokemons,
+                results: newResults
+            });
         }
-    };
-    const handleSortByInputChange = (e, newInputValue) => {
-        setSortByInputValue(newInputValue);
     };
     const handlePageSizeChange = newLimit => {
         setLimit(newLimit);
     };
-    const handlePrevNext = name => {
-        let newOffset = offset;
-        if (name === 'next') {
-            newOffset += limit;
-            newOffset =
-                newOffset >= pokemons.count ? pokemons.count : newOffset;
-        } else {
-            newOffset -= limit;
-            newOffset = newOffset < limit ? 0 : newOffset;
-        }
+    const handlePrevNext = newOffset => {
         setOffset(newOffset);
     };
 
@@ -190,54 +91,15 @@ const App = props => {
             <div
                 className={`${muiClasses.displayType} ${muiClasses.topContent}`}
             >
-                <Box
-                    className={`${muiClasses.displayType} ${muiClasses.filtersContainer}`}
-                >
-                    <TextField
-                        fullWidth
-                        variant="outlined"
-                        id="search-by-name"
-                        label="Search By Name"
-                        className={muiClasses.searchBox}
-                        value={searchNameStr}
-                        onChange={handleSearchChange('name')}
-                    />
-                    <TextField
-                        fullWidth
-                        variant="outlined"
-                        id="search-by-abilities"
-                        label="Search By Abilities"
-                        className={muiClasses.searchBox}
-                        value={searchAbleStr}
-                        onChange={handleSearchChange('abilities')}
-                    />
-                    <Autocomplete
-                        fullWidth
-                        id="sort-by-select"
-                        options={['Name', 'Height', 'Weight']}
-                        defaultValue={null}
-                        value={sortByValue}
-                        inputValue={sortByInputValue}
-                        renderInput={params => (
-                            <TextField
-                                {...params}
-                                label="Sort By"
-                                variant="outlined"
-                            />
-                        )}
-                        getOptionSelected={(option, value) =>
-                            option === value || value === ''
-                        }
-                        onChange={handleSortByChange}
-                        onInputChange={handleSortByInputChange}
-                    />
-                </Box>
+                <Filters
+                    pokemons={pokemons}
+                    onSearchChange={handleSearchChange}
+                    onSortByChange={handleSortByChange}
+                />
                 <Pagination
                     limit={limit}
-                    disablePrevBtn={!filtered || (filtered && offset <= 0)}
-                    disableNextBtn={
-                        !filtered || (filtered && offset >= filtered.count)
-                    }
+                    offset={offset}
+                    filtered={filtered}
                     onSizeChange={handlePageSizeChange}
                     onBtnClick={handlePrevNext}
                 />
@@ -245,37 +107,18 @@ const App = props => {
             <div
                 className={`${muiClasses.displayType} ${muiClasses.middleContent}`}
             >
-                <Grid container spacing={2}>
-                    {filtered && filtered.results && filtered.results.length
-                        ? filtered.results.map(pokemon => (
-                              <Grid item xs={6} md={2} key={pokemon.name}>
-                                  <DetailsCard
-                                      pokemon={pokemon}
-                                      pokemaenApiUtils={pokemaenApiUtils}
-                                  />
-                              </Grid>
-                          ))
-                        : [...new Array(12)].fill(0).map(() => (
-                              <Grid
-                                  item
-                                  xs={6}
-                                  md={2}
-                                  key={Math.random().toString().slice(0, 6)}
-                              >
-                                  <DetailsSkeleton />
-                              </Grid>
-                          ))}
-                </Grid>
+                <Cards
+                    filtered={filtered}
+                    pokemaenApiUtils={pokemaenApiUtils}
+                />
             </div>
             <div
                 className={`${muiClasses.displayType} ${muiClasses.bottomContent}`}
             >
                 <Pagination
                     limit={limit}
-                    disablePrevBtn={!filtered || (filtered && offset <= 0)}
-                    disableNextBtn={
-                        !filtered || (filtered && offset >= filtered.count)
-                    }
+                    offset={offset}
+                    filtered={filtered}
                     onSizeChange={handlePageSizeChange}
                     onBtnClick={handlePrevNext}
                 />

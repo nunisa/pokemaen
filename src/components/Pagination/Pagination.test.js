@@ -9,8 +9,8 @@ describe('Pagination component', () => {
         wrapper = shallow(
             <Pagination
                 limit={10}
-                disablePrevBtn={true}
-                disableNextBtn={false}
+                offset={10}
+                filtered={[]}
                 onSizeChange={() => {}}
                 onBtnClick={() => {}}
             />

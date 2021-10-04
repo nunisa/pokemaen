@@ -31,14 +31,22 @@ const muiStyles = makeStyles(theme => ({
 
 const Pagination = props => {
     const muiClasses = muiStyles();
-    const { limit, disablePrevBtn, disableNextBtn, onSizeChange, onBtnClick } =
-        props;
+    const { limit, offset, filtered, onSizeChange, onBtnClick } = props;
 
     const handlePageSizeChange = e => {
         onSizeChange(e.target.value);
     };
     const handlePrevNext = name => () => {
-        onBtnClick(name);
+        let newOffset = offset;
+        if (name === 'next') {
+            newOffset += limit;
+            newOffset =
+                newOffset >= filtered.count ? filtered.count : newOffset;
+        } else {
+            newOffset -= limit;
+            newOffset = newOffset < limit ? 0 : newOffset;
+        }
+        onBtnClick(newOffset);
     };
 
     return (
@@ -67,7 +75,7 @@ const Pagination = props => {
                 <Tooltip title="Previous" arrow>
                     <Box component="span">
                         <IconButton
-                            disabled={disablePrevBtn}
+                            disabled={!filtered || (filtered && offset <= 0)}
                             onClick={handlePrevNext('prev')}
                         >
                             <ArrowBackIosIcon />
@@ -77,7 +85,10 @@ const Pagination = props => {
                 <Tooltip title="Next" arrow>
                     <Box component="span">
                         <IconButton
-                            disabled={disableNextBtn}
+                            disabled={
+                                !filtered ||
+                                (filtered && offset >= filtered.count)
+                            }
                             onClick={handlePrevNext('next')}
                         >
                             <ArrowForwardIosIcon />
@@ -91,8 +102,8 @@ const Pagination = props => {
 
 Pagination.propTypes = {
     limit: PropTypes.number.isRequired,
-    disablePrevBtn: PropTypes.bool.isRequired,
-    disableNextBtn: PropTypes.bool.isRequired,
+    offset: PropTypes.number.isRequired,
+    filtered: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     onSizeChange: PropTypes.func.isRequired,
     onBtnClick: PropTypes.func.isRequired
 };
