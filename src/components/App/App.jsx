@@ -44,7 +44,10 @@ const muiStyles = makeStyles(theme => ({
         marginLeft: 'auto'
     },
     filtersContainer: {
-        flexGrow: 1,
+        flexDirection: 'row',
+        marginRight: theme.spacing(4)
+    },
+    searchBox: {
         marginRight: theme.spacing(4)
     }
 }));
@@ -53,6 +56,8 @@ const App = props => {
     const muiClasses = muiStyles();
     const [pokemons, setPokemons] = useState(null);
     const [filtered, setFiltered] = useState(null);
+    const [searchNameStr, setSearchNameStr] = useState('');
+    const [searchAbleStr, setSearchAbleStr] = useState('');
     const [sortByValue, setSortByValue] = useState('');
     const [sortByInputValue, setSortByInputValue] = useState('');
     const [limit, setLimit] = useState(10);
@@ -74,6 +79,57 @@ const App = props => {
         getAllPokemons();
     }, [limit, offset]);
 
+    const handleSearchChange = name => e => {
+        const newStr = e.target.value;
+        if (pokemons) {
+            const newPokemons = _.cloneDeep(pokemons);
+            if (newStr) {
+                if (name === 'name') {
+                    setSearchNameStr(newStr);
+                    setFiltered({
+                        ...newPokemons,
+                        results: newPokemons.results.filter(item =>
+                            item.name.includes(newStr.toLowerCase())
+                        )
+                    });
+                } else {
+                    const promises = newPokemons.results.reduce((arr, item) => {
+                        arr.push(fetch(item.url).then(res => res.json()));
+
+                        return arr;
+                    }, []);
+                    Promise.all(promises).then(res => {
+                        const results = res.reduce((arr, item) => {
+                            item.abilities.forEach(able => {
+                                if (
+                                    !able.is_hidden &&
+                                    able.ability.name.includes(
+                                        newStr.toLowerCase()
+                                    )
+                                ) {
+                                    arr.push(item);
+                                }
+                            });
+
+                            return arr;
+                        }, []);
+                        setSearchAbleStr(newStr);
+                        setFiltered({
+                            ...newPokemons,
+                            results
+                        });
+                    });
+                }
+            } else {
+                setSearchNameStr('');
+                setSearchAbleStr('');
+                setFiltered({
+                    ...newPokemons,
+                    results: newPokemons.results
+                });
+            }
+        }
+    };
     const handleSortByChange = (e, newValue) => {
         setSortByValue(newValue);
         const needle = (newValue && newValue.toLowerCase()) || '';
@@ -134,8 +190,29 @@ const App = props => {
             <div
                 className={`${muiClasses.displayType} ${muiClasses.topContent}`}
             >
-                <Box className={muiClasses.filtersContainer}>
+                <Box
+                    className={`${muiClasses.displayType} ${muiClasses.filtersContainer}`}
+                >
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        id="search-by-name"
+                        label="Search By Name"
+                        className={muiClasses.searchBox}
+                        value={searchNameStr}
+                        onChange={handleSearchChange('name')}
+                    />
+                    <TextField
+                        fullWidth
+                        variant="outlined"
+                        id="search-by-abilities"
+                        label="Search By Abilities"
+                        className={muiClasses.searchBox}
+                        value={searchAbleStr}
+                        onChange={handleSearchChange('abilities')}
+                    />
                     <Autocomplete
+                        fullWidth
                         id="sort-by-select"
                         options={['Name', 'Height', 'Weight']}
                         defaultValue={null}

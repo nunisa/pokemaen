@@ -83,6 +83,10 @@ const DetailsCard = props => {
             }
         };
         getAllPokemons();
+
+        return () => {
+            setDetails({});
+        };
     }, [pokemon, pokemaenApiUtils]);
 
     const { name, height, weight, abilities, sprites } = details;
