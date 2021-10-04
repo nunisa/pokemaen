@@ -7,6 +7,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Chip from '@material-ui/core/Chip';
+import Button from '@material-ui/core/Button';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { DetailsSkeleton } from '../Skeletons';
 import PokemaenApiUtils from '../../assets/utils/apiEndpointMethods';
 
@@ -31,7 +33,8 @@ const muiStyles = makeStyles(theme => ({
     cardActionArea: {
         justifyContent: 'space-evenly',
         height: `calc(100vh - ${theme.spacing(8)}px)`,
-        padding: theme.spacing(2, 0)
+        padding: theme.spacing(2, 0),
+        position: 'relative'
     },
     cardMediaContainer: {
         height: theme.spacing(30),
@@ -71,6 +74,11 @@ const muiStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.text.secondary,
         borderRadius: '50%',
         margin: theme.spacing(0, 0.5, 0.75, 0.75)
+    },
+    backToHome: {
+        position: 'absolute',
+        top: '5%',
+        left: '5%'
     }
 }));
 
@@ -99,6 +107,9 @@ const DetailInfo = props => {
     }, [pokemonName]);
 
     const { name, height, weight, abilities, sprites } = details;
+    const handleBackToHome = () => {
+        props.history.push('/');
+    };
 
     return Object.keys(details).length ? (
         <Card className={muiClasses.card}>
@@ -205,6 +216,14 @@ const DetailInfo = props => {
                         </Box>
                     </Box>
                 </CardContent>
+                <Button
+                    variant="text"
+                    startIcon={<KeyboardBackspaceIcon />}
+                    className={muiClasses.backToHome}
+                    onClick={handleBackToHome}
+                >
+                    Home
+                </Button>
             </CardActionArea>
         </Card>
     ) : (
