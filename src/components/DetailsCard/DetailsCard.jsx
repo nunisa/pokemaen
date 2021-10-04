@@ -38,6 +38,10 @@ const muiStyles = makeStyles(theme => ({
         '& > img': {
             height: '100%',
             width: '100%'
+        },
+        [theme.breakpoints.down('sm')]: {
+            height: theme.spacing(22.5),
+            width: theme.spacing(22.5)
         }
     },
     pokemonName: {

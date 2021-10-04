@@ -28,7 +28,10 @@ const muiStyles = makeStyles(theme => ({
         position: 'fixed',
         top: '50%',
         left: '50%',
-        transform: 'translate(-50%, -50%)'
+        transform: 'translate(-50%, -50%)',
+        [theme.breakpoints.down('sm')]: {
+            width: '94%'
+        }
     },
     cardActionArea: {
         justifyContent: 'space-evenly',
@@ -47,6 +50,14 @@ const muiStyles = makeStyles(theme => ({
         '& > img': {
             height: '100%',
             width: '100%'
+        },
+        [theme.breakpoints.down('sm')]: {
+            height: theme.spacing(40),
+            width: theme.spacing(40)
+        },
+        [theme.breakpoints.down('xs')]: {
+            height: theme.spacing(25),
+            width: theme.spacing(25)
         }
     },
     pokemonName: {
@@ -218,6 +229,7 @@ const DetailInfo = props => {
                 </CardContent>
                 <Button
                     variant="text"
+                    component="div"
                     startIcon={<KeyboardBackspaceIcon />}
                     className={muiClasses.backToHome}
                     onClick={handleBackToHome}

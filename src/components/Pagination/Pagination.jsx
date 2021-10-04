@@ -11,7 +11,10 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 // MUI custom styles
 const muiStyles = makeStyles(theme => ({
     selectPageSize: {
-        marginLeft: 'auto'
+        marginLeft: 'auto',
+        [theme.breakpoints.down('sm')]: {
+            marginLeft: 0
+        }
     },
     prevNext: {
         '& > span': {
@@ -68,7 +71,7 @@ const Pagination = props => {
                     ))}
                 </Select>
                 <Box component="span" className={muiClasses.mr2}>
-                    pokemons per page
+                    per page
                 </Box>
             </Box>
             <Box className={muiClasses.prevNext}>

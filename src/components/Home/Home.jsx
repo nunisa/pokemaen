@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import _ from 'lodash/fp';
 import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import Filters from '../Filters';
 import Pagination from '../Pagination';
 import Cards from '../Cards';
@@ -26,15 +27,51 @@ const muiStyles = makeStyles(theme => ({
     topContent: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: theme.spacing(4)
+        padding: theme.spacing(4),
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(2)
+        }
+    },
+    mainGridContainer: {
+        [theme.breakpoints.down('sm')]: {
+            flexDirection: 'column'
+        }
+    },
+    filtersContainer: {
+        flexDirection: 'row',
+        [theme.breakpoints.down('sm')]: {
+            '& .MuiGrid-root': {
+                '&:not(:last-child)': {
+                    marginBottom: theme.spacing(2.5)
+                }
+            }
+        },
+        [theme.breakpoints.down('xs')]: {
+            '& .MuiGrid-root': {
+                '&:not(:last-child)': {
+                    marginBottom: theme.spacing(1.75)
+                }
+            }
+        }
+    },
+    paginationGridItem: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     middleContent: {
-        padding: theme.spacing(4)
+        padding: theme.spacing(4),
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(2)
+        }
     },
     bottomContent: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: theme.spacing(4)
+        padding: theme.spacing(4),
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(2)
+        }
     }
 }));
 
@@ -91,18 +128,39 @@ const Home = props => {
             <div
                 className={`${muiClasses.displayType} ${muiClasses.topContent}`}
             >
-                <Filters
-                    pokemons={pokemons}
-                    onSearchChange={handleSearchChange}
-                    onSortByChange={handleSortByChange}
-                />
-                <Pagination
-                    limit={limit}
-                    offset={offset}
-                    filtered={filtered}
-                    onSizeChange={handlePageSizeChange}
-                    onBtnClick={handlePrevNext}
-                />
+                <Grid
+                    container
+                    spacing={2}
+                    className={muiClasses.mainGridContainer}
+                >
+                    <Grid
+                        container
+                        item
+                        xs={12}
+                        md={8}
+                        className={`${muiClasses.displayType} ${muiClasses.filtersContainer}`}
+                    >
+                        <Filters
+                            pokemons={pokemons}
+                            onSearchChange={handleSearchChange}
+                            onSortByChange={handleSortByChange}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        md={4}
+                        className={muiClasses.paginationGridItem}
+                    >
+                        <Pagination
+                            limit={limit}
+                            offset={offset}
+                            filtered={filtered}
+                            onSizeChange={handlePageSizeChange}
+                            onBtnClick={handlePrevNext}
+                        />
+                    </Grid>
+                </Grid>
             </div>
             <div
                 className={`${muiClasses.displayType} ${muiClasses.middleContent}`}

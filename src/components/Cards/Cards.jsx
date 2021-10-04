@@ -12,7 +12,8 @@ const Cards = props => {
                 ? filtered.results.map(pokemon => (
                       <Grid
                           item
-                          xs={6}
+                          xs={12}
+                          sm={6}
                           md={2}
                           key={Math.random().toString().slice(0, 6)}
                       >
@@ -25,7 +26,8 @@ const Cards = props => {
                 : [...new Array(12)].fill(0).map(() => (
                       <Grid
                           item
-                          xs={6}
+                          xs={12}
+                          sm={6}
                           md={2}
                           key={Math.random().toString().slice(0, 6)}
                       >

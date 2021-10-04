@@ -2,9 +2,9 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash/fp';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 
 // MUI custom styles
 const muiStyles = makeStyles(theme => ({
@@ -15,12 +15,11 @@ const muiStyles = makeStyles(theme => ({
         alignItems: 'center',
         flexGrow: 1
     },
-    filtersContainer: {
-        flexDirection: 'row',
-        marginRight: theme.spacing(4)
-    },
     searchBox: {
-        marginRight: theme.spacing(4)
+        marginRight: theme.spacing(4),
+        [theme.breakpoints.down('sm')]: {
+            marginRight: 0
+        }
     }
 }));
 
@@ -110,44 +109,52 @@ const Filters = props => {
     };
 
     return (
-        <Box
-            className={`${muiClasses.displayType} ${muiClasses.filtersContainer}`}
-        >
-            <TextField
-                fullWidth
-                variant="outlined"
-                id="search-by-name"
-                label="Search By Name"
-                className={muiClasses.searchBox}
-                value={searchNameStr}
-                onChange={handleSearchChange('name')}
-            />
-            <TextField
-                fullWidth
-                variant="outlined"
-                id="search-by-abilities"
-                label="Search By Abilities"
-                className={muiClasses.searchBox}
-                value={searchAbleStr}
-                onChange={handleSearchChange('abilities')}
-            />
-            <Autocomplete
-                fullWidth
-                id="sort-by-select"
-                options={['Name', 'Height', 'Weight']}
-                defaultValue={null}
-                value={sortByValue}
-                inputValue={sortByInputValue}
-                renderInput={params => (
-                    <TextField {...params} label="Sort By" variant="outlined" />
-                )}
-                getOptionSelected={(option, value) =>
-                    option === value || value === ''
-                }
-                onChange={handleSortByChange}
-                onInputChange={handleSortByInputChange}
-            />
-        </Box>
+        <>
+            <Grid container item xs={12} md={4}>
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    id="search-by-name"
+                    label="Search By Name"
+                    className={muiClasses.searchBox}
+                    value={searchNameStr}
+                    onChange={handleSearchChange('name')}
+                />
+            </Grid>
+            <Grid container item xs={12} md={4}>
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    id="search-by-abilities"
+                    label="Search By Abilities"
+                    className={muiClasses.searchBox}
+                    value={searchAbleStr}
+                    onChange={handleSearchChange('abilities')}
+                />
+            </Grid>
+            <Grid container item xs={12} md={4}>
+                <Autocomplete
+                    fullWidth
+                    id="sort-by-select"
+                    options={['Name', 'Height', 'Weight']}
+                    defaultValue={null}
+                    value={sortByValue}
+                    inputValue={sortByInputValue}
+                    renderInput={params => (
+                        <TextField
+                            {...params}
+                            label="Sort By"
+                            variant="outlined"
+                        />
+                    )}
+                    getOptionSelected={(option, value) =>
+                        option === value || value === ''
+                    }
+                    onChange={handleSortByChange}
+                    onInputChange={handleSortByInputChange}
+                />
+            </Grid>
+        </>
     );
 };
 
