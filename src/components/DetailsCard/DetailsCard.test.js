@@ -6,7 +6,7 @@ let wrapper;
 
 describe('DetailsCard component', () => {
     beforeEach(() => {
-        wrapper = shallow(<DetailsCard />);
+        wrapper = shallow(<DetailsCard pokemon={{}} pokemaenApiUtils={{}} />);
     });
 
     it('should be defined', () => {

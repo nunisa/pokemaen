@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
@@ -83,6 +84,7 @@ const DetailsCard = props => {
         };
         getAllPokemons();
     }, [pokemon, pokemaenApiUtils]);
+
     const { name, height, weight, abilities, sprites } = details;
 
     return Object.keys(details).length ? (
@@ -193,6 +195,11 @@ const DetailsCard = props => {
     ) : (
         <DetailsSkeleton />
     );
+};
+
+DetailsCard.propTypes = {
+    pokemon: PropTypes.object.isRequired,
+    pokemaenApiUtils: PropTypes.object.isRequired
 };
 
 export default DetailsCard;

@@ -51,6 +51,7 @@ const Pagination = props => {
                     value={limit}
                     onChange={handlePageSizeChange}
                     className={muiClasses.mr1075}
+                    id="limit-per-page"
                 >
                     {[10, 20, 50].map(item => (
                         <MenuItem key={item} value={item}>
