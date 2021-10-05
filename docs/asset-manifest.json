@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/static/css/main.76f7b238.chunk.css",
-    "main.js": "/static/js/main.6946b4ca.chunk.js",
-    "main.js.map": "/static/js/main.6946b4ca.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.621e76cc.js",
-    "runtime-main.js.map": "/static/js/runtime-main.621e76cc.js.map",
-    "static/js/2.45cc0cb0.chunk.js": "/static/js/2.45cc0cb0.chunk.js",
-    "static/js/2.45cc0cb0.chunk.js.map": "/static/js/2.45cc0cb0.chunk.js.map",
-    "static/js/3.03f45b4d.chunk.js": "/static/js/3.03f45b4d.chunk.js",
-    "static/js/3.03f45b4d.chunk.js.map": "/static/js/3.03f45b4d.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/main.76f7b238.chunk.css.map": "/static/css/main.76f7b238.chunk.css.map",
-    "static/js/2.45cc0cb0.chunk.js.LICENSE.txt": "/static/js/2.45cc0cb0.chunk.js.LICENSE.txt",
-    "static/media/broken-pokeball.png": "/static/media/broken-pokeball.0c792856.png"
+    "main.css": "https://nunisa.github.io/pokemaen/static/css/main.76f7b238.chunk.css",
+    "main.js": "https://nunisa.github.io/pokemaen/static/js/main.6946b4ca.chunk.js",
+    "main.js.map": "https://nunisa.github.io/pokemaen/static/js/main.6946b4ca.chunk.js.map",
+    "runtime-main.js": "https://nunisa.github.io/pokemaen/static/js/runtime-main.ccca57ad.js",
+    "runtime-main.js.map": "https://nunisa.github.io/pokemaen/static/js/runtime-main.ccca57ad.js.map",
+    "static/js/2.6437e143.chunk.js": "https://nunisa.github.io/pokemaen/static/js/2.6437e143.chunk.js",
+    "static/js/2.6437e143.chunk.js.map": "https://nunisa.github.io/pokemaen/static/js/2.6437e143.chunk.js.map",
+    "static/js/3.03f45b4d.chunk.js": "https://nunisa.github.io/pokemaen/static/js/3.03f45b4d.chunk.js",
+    "static/js/3.03f45b4d.chunk.js.map": "https://nunisa.github.io/pokemaen/static/js/3.03f45b4d.chunk.js.map",
+    "index.html": "https://nunisa.github.io/pokemaen/index.html",
+    "static/css/main.76f7b238.chunk.css.map": "https://nunisa.github.io/pokemaen/static/css/main.76f7b238.chunk.css.map",
+    "static/js/2.6437e143.chunk.js.LICENSE.txt": "https://nunisa.github.io/pokemaen/static/js/2.6437e143.chunk.js.LICENSE.txt",
+    "static/media/broken-pokeball.png": "https://nunisa.github.io/pokemaen/static/media/broken-pokeball.0c792856.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.621e76cc.js",
-    "static/js/2.45cc0cb0.chunk.js",
+    "static/js/runtime-main.ccca57ad.js",
+    "static/js/2.6437e143.chunk.js",
     "static/css/main.76f7b238.chunk.css",
     "static/js/main.6946b4ca.chunk.js"
   ]
