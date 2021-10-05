@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/pokemaen/static/css/main.76f7b238.chunk.css",
-    "main.js": "/pokemaen/static/js/main.6946b4ca.chunk.js",
-    "main.js.map": "/pokemaen/static/js/main.6946b4ca.chunk.js.map",
+    "main.js": "/pokemaen/static/js/main.938412a3.chunk.js",
+    "main.js.map": "/pokemaen/static/js/main.938412a3.chunk.js.map",
     "runtime-main.js": "/pokemaen/static/js/runtime-main.bfcea8f4.js",
     "runtime-main.js.map": "/pokemaen/static/js/runtime-main.bfcea8f4.js.map",
     "static/js/2.ccbbcb19.chunk.js": "/pokemaen/static/js/2.ccbbcb19.chunk.js",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.bfcea8f4.js",
     "static/js/2.ccbbcb19.chunk.js",
     "static/css/main.76f7b238.chunk.css",
-    "static/js/main.6946b4ca.chunk.js"
+    "static/js/main.938412a3.chunk.js"
   ]
 }
