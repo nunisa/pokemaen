@@ -5,7 +5,7 @@ import DetailInfo from '../DetailInfo';
 import NotFound from '../NotFound';
 
 const App = () => (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
         <CssBaseline />
         <Switch>
             <Route exact path="/" component={Home} />
