@@ -23,6 +23,6 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 ## Demo
 
-<img height="400" width="800" alt="desktop-view" src="public/desktop-view.png">
-<img height="600" width="500" alt="desktop-view" src="public/tablet-view.png">
-<img height="600" width="395" alt="desktop-view" src="public/mobile-view.png">
+<img height="520" width="800" alt="desktop-view" src="public/desktop-view.png">
+<img height="700" width="500" alt="desktop-view" src="public/tablet-view.png">
+<img height="786" width="395" alt="desktop-view" src="public/mobile-view.png">
