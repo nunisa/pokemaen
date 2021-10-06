@@ -27,7 +27,7 @@ const muiStyles = makeStyles(theme => ({
     topContent: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: theme.spacing(4),
+        padding: theme.spacing(4, 4, 1),
         [theme.breakpoints.down('sm')]: {
             padding: theme.spacing(2)
         }
@@ -60,7 +60,7 @@ const muiStyles = makeStyles(theme => ({
         alignItems: 'center'
     },
     middleContent: {
-        padding: theme.spacing(4),
+        padding: theme.spacing(1, 4),
         [theme.breakpoints.down('sm')]: {
             padding: theme.spacing(2)
         }
@@ -68,7 +68,7 @@ const muiStyles = makeStyles(theme => ({
     bottomContent: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: theme.spacing(4),
+        padding: theme.spacing(1, 4, 4),
         [theme.breakpoints.down('sm')]: {
             padding: theme.spacing(2)
         }
@@ -142,6 +142,7 @@ const Home = props => {
                     >
                         <Filters
                             pokemons={pokemons}
+                            filtered={filtered}
                             onSearchChange={handleSearchChange}
                             onSortByChange={handleSortByChange}
                         />

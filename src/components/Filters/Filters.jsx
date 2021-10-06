@@ -25,7 +25,7 @@ const muiStyles = makeStyles(theme => ({
 
 const Filters = props => {
     const muiClasses = muiStyles();
-    const { pokemons, onSearchChange, onSortByChange } = props;
+    const { pokemons, filtered, onSearchChange, onSortByChange } = props;
     const [searchNameStr, setSearchNameStr] = useState('');
     const [searchAbleStr, setSearchAbleStr] = useState('');
     const [sortByValue, setSortByValue] = useState('');
@@ -37,49 +37,88 @@ const Filters = props => {
             const newPokemons = _.cloneDeep(pokemons);
             if (newStr) {
                 if (name === 'name') {
-                    setSearchNameStr(newStr);
-                    onSearchChange(
-                        newPokemons.results.filter(item =>
-                            item.name.includes(newStr.toLowerCase())
-                        )
-                    );
+                    getAndSetPokeDetailsByName(newPokemons, newStr);
                 } else {
-                    const promises = newPokemons.results.reduce((arr, item) => {
-                        arr.push(fetch(item.url).then(res => res.json()));
-
-                        return arr;
-                    }, []);
-                    Promise.all(promises).then(res => {
-                        const results = res.reduce((arr, item) => {
-                            item.abilities.forEach(able => {
-                                if (
-                                    !able.is_hidden &&
-                                    able.ability.name.includes(
-                                        newStr.toLowerCase()
-                                    )
-                                ) {
-                                    arr.push(item);
-                                }
-                            });
-
-                            return arr;
-                        }, []);
-                        setSearchAbleStr(newStr);
-                        onSearchChange(results);
-                    });
+                    getAndSetPokeDetailsByAbilities(newPokemons, newStr);
                 }
             } else {
-                setSearchNameStr('');
-                setSearchAbleStr('');
-                onSearchChange(newPokemons.results);
+                if (name === 'name' && !searchNameStr && searchAbleStr) {
+                    getAndSetPokeDetailsByAbilities(
+                        newPokemons,
+                        searchAbleStr,
+                        true
+                    );
+                } else if (
+                    name === 'abilities' &&
+                    searchNameStr &&
+                    !searchAbleStr
+                ) {
+                    getAndSetPokeDetailsByName(
+                        newPokemons,
+                        searchNameStr,
+                        true
+                    );
+                } else {
+                    setSearchNameStr('');
+                    setSearchAbleStr('');
+                    onSearchChange(pokemons.results);
+                }
             }
         }
+    };
+    const getAndSetPokeDetailsByName = (
+        newPokemons,
+        newStr,
+        noAbleStr = false
+    ) => {
+        if (noAbleStr) {
+            setSearchAbleStr('');
+        }
+        setSearchNameStr(newStr);
+        onSearchChange(
+            newPokemons.results.filter(item =>
+                item.name.includes(newStr.toLowerCase())
+            )
+        );
+    };
+    const getAndSetPokeDetailsByAbilities = (
+        newPokemons,
+        newStr,
+        noNameStr = false
+    ) => {
+        const promises = newPokemons.results.reduce((arr, item) => {
+            arr.push(fetch(item.url).then(res => res.json()));
+
+            return arr;
+        }, []);
+        Promise.all(promises).then(res => {
+            const results = res.reduce((arr, item) => {
+                item.abilities.forEach(able => {
+                    if (
+                        !able.is_hidden &&
+                        able.ability.name.includes(newStr.toLowerCase())
+                    ) {
+                        arr.push({
+                            ...item.species,
+                            url: item.species.url.replace('-species', '')
+                        });
+                    }
+                });
+
+                return arr;
+            }, []);
+            if (noNameStr) {
+                setSearchNameStr('');
+            }
+            setSearchAbleStr(newStr);
+            onSearchChange(results);
+        });
     };
     const handleSortByChange = (e, newValue) => {
         setSortByValue(newValue);
         const needle = (newValue && newValue.toLowerCase()) || '';
-        if (pokemons) {
-            const newPokemons = _.cloneDeep(pokemons);
+        if (pokemons && filtered) {
+            const newPokemons = _.cloneDeep(filtered);
             if (newValue) {
                 if (newValue === 'Name') {
                     onSortByChange(
@@ -94,13 +133,23 @@ const Filters = props => {
                         return arr;
                     }, []);
                     Promise.all(promises).then(res => {
+                        const sorted = res.sort((a, b) =>
+                            a[needle] > b[needle] ? -1 : 1
+                        );
                         onSortByChange(
-                            res.sort((a, b) => (a[needle] > b[needle] ? -1 : 1))
+                            sorted.map(item => ({
+                                ...item.species,
+                                url: item.species.url.replace('-species', '')
+                            }))
                         );
                     });
                 }
             } else {
-                onSortByChange(newPokemons.results);
+                if (filtered.results.length) {
+                    onSortByChange(filtered.results);
+                } else {
+                    onSortByChange(newPokemons.results);
+                }
             }
         }
     };
@@ -114,6 +163,7 @@ const Filters = props => {
                 <TextField
                     fullWidth
                     variant="outlined"
+                    size="small"
                     id="search-by-name"
                     label="Search By Name"
                     className={muiClasses.searchBox}
@@ -125,6 +175,7 @@ const Filters = props => {
                 <TextField
                     fullWidth
                     variant="outlined"
+                    size="small"
                     id="search-by-abilities"
                     label="Search By Abilities"
                     className={muiClasses.searchBox}
@@ -135,6 +186,7 @@ const Filters = props => {
             <Grid container item xs={12} md={4}>
                 <Autocomplete
                     fullWidth
+                    size="small"
                     id="sort-by-select"
                     options={['Name', 'Height', 'Weight']}
                     defaultValue={null}
