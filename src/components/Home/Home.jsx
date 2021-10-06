@@ -60,7 +60,7 @@ const muiStyles = makeStyles(theme => ({
         alignItems: 'center'
     },
     middleContent: {
-        padding: theme.spacing(1, 4),
+        padding: theme.spacing(2, 4, 1),
         [theme.breakpoints.down('sm')]: {
             padding: theme.spacing(2)
         }
