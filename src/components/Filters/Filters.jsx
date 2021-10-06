@@ -115,41 +115,44 @@ const Filters = props => {
         });
     };
     const handleSortByChange = (e, newValue) => {
-        setSortByValue(newValue);
-        const needle = (newValue && newValue.toLowerCase()) || '';
+        setSortByValue(newValue || '');
         if (pokemons && filtered) {
             const newPokemons = _.cloneDeep(filtered);
-            if (newValue) {
-                if (newValue === 'Name') {
-                    onSortByChange(
-                        newPokemons.results.sort((a, b) =>
-                            a.name > b.name ? 1 : -1
-                        )
-                    );
-                } else if (newValue === 'Height' || newValue === 'Weight') {
-                    const promises = newPokemons.results.reduce((arr, item) => {
-                        arr.push(fetch(item.url).then(res => res.json()));
+            sortPokemons(newPokemons, newValue);
+        }
+    };
+    const sortPokemons = (newPokemons, newValue) => {
+        const needle = (newValue && newValue.toLowerCase()) || '';
+        if (newValue) {
+            if (newValue === 'Name') {
+                onSortByChange(
+                    newPokemons.results.sort((a, b) =>
+                        a.name > b.name ? 1 : -1
+                    )
+                );
+            } else if (newValue === 'Height' || newValue === 'Weight') {
+                const promises = newPokemons.results.reduce((arr, item) => {
+                    arr.push(fetch(item.url).then(res => res.json()));
 
-                        return arr;
-                    }, []);
-                    Promise.all(promises).then(res => {
-                        const sorted = res.sort((a, b) =>
-                            a[needle] > b[needle] ? -1 : 1
-                        );
-                        onSortByChange(
-                            sorted.map(item => ({
-                                ...item.species,
-                                url: item.species.url.replace('-species', '')
-                            }))
-                        );
-                    });
-                }
+                    return arr;
+                }, []);
+                Promise.all(promises).then(res => {
+                    const sorted = res.sort((a, b) =>
+                        a[needle] > b[needle] ? -1 : 1
+                    );
+                    onSortByChange(
+                        sorted.map(item => ({
+                            ...item.species,
+                            url: item.species.url.replace('-species', '')
+                        }))
+                    );
+                });
+            }
+        } else {
+            if (filtered.results.length) {
+                onSortByChange(filtered.results);
             } else {
-                if (filtered.results.length) {
-                    onSortByChange(filtered.results);
-                } else {
-                    onSortByChange(newPokemons.results);
-                }
+                onSortByChange(newPokemons.results);
             }
         }
     };
