@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/pokemaen/static/css/main.76f7b238.chunk.css",
-    "main.js": "/pokemaen/static/js/main.938412a3.chunk.js",
-    "main.js.map": "/pokemaen/static/js/main.938412a3.chunk.js.map",
+    "main.js": "/pokemaen/static/js/main.2ef903a6.chunk.js",
+    "main.js.map": "/pokemaen/static/js/main.2ef903a6.chunk.js.map",
     "runtime-main.js": "/pokemaen/static/js/runtime-main.bfcea8f4.js",
     "runtime-main.js.map": "/pokemaen/static/js/runtime-main.bfcea8f4.js.map",
-    "static/js/2.ccbbcb19.chunk.js": "/pokemaen/static/js/2.ccbbcb19.chunk.js",
-    "static/js/2.ccbbcb19.chunk.js.map": "/pokemaen/static/js/2.ccbbcb19.chunk.js.map",
+    "static/js/2.30628a9a.chunk.js": "/pokemaen/static/js/2.30628a9a.chunk.js",
+    "static/js/2.30628a9a.chunk.js.map": "/pokemaen/static/js/2.30628a9a.chunk.js.map",
     "static/js/3.03f45b4d.chunk.js": "/pokemaen/static/js/3.03f45b4d.chunk.js",
     "static/js/3.03f45b4d.chunk.js.map": "/pokemaen/static/js/3.03f45b4d.chunk.js.map",
     "index.html": "/pokemaen/index.html",
     "static/css/main.76f7b238.chunk.css.map": "/pokemaen/static/css/main.76f7b238.chunk.css.map",
-    "static/js/2.ccbbcb19.chunk.js.LICENSE.txt": "/pokemaen/static/js/2.ccbbcb19.chunk.js.LICENSE.txt",
+    "static/js/2.30628a9a.chunk.js.LICENSE.txt": "/pokemaen/static/js/2.30628a9a.chunk.js.LICENSE.txt",
     "static/media/broken-pokeball.png": "/pokemaen/static/media/broken-pokeball.0c792856.png"
   },
   "entrypoints": [
     "static/js/runtime-main.bfcea8f4.js",
-    "static/js/2.ccbbcb19.chunk.js",
+    "static/js/2.30628a9a.chunk.js",
     "static/css/main.76f7b238.chunk.css",
-    "static/js/main.938412a3.chunk.js"
+    "static/js/main.2ef903a6.chunk.js"
   ]
 }
